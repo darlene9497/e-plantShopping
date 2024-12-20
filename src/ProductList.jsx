@@ -244,7 +244,6 @@ function ProductList() {
 
 const handleAddToCart = (plant) => {
     dispatch(addItem(plant)); // Dispatch addItem action to add the plant to the cart
-    alert(`Added ${plant.name} to your cart!`);
     setAddedToCart((prevState) => ({
         ...prevState,
         [plant.name]: true,
@@ -257,10 +256,10 @@ const handlePlantsClick = (e) => {
     setShowCart(false); // Hide the cart when navigating to About Us
 };
 
-   const handleContinueShopping = (e) => {
-    e.preventDefault();
-    setShowCart(false);
-  };
+    const handleContinueShopping = () => {
+        setShowCart(false); // Hide the cart and show the product list
+    };
+
     return (
         <div>
              <div className="navbar" style={styleObj}>
