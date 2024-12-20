@@ -228,11 +228,14 @@ body {
 .product-item p {
     text-align: center;
     margin: 5px 0;
+    font-style: italic;
+    font-size: 14px;
 }
 
 .product-item .plant-cost {
     font-weight: bold;
     margin-bottom: 10px;
+    font-style: normal;
 }
 
 /* Add Media Query for responsiveness */

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from './CartSlice';
 function ProductList() {
     const [showCart, setShowCart] = useState(false); 
@@ -243,12 +243,16 @@ function ProductList() {
 };
 
 const handleAddToCart = (plant) => {
-    dispatch(addItem(plant)); // Dispatch addItem action to add the plant to the cart
+    dispatch(addItem(plant));
     setAddedToCart((prevState) => ({
         ...prevState,
         [plant.name]: true,
-    }))
+    }));
 };
+
+const totalItems = useSelector((state) =>
+    state.cart.items.reduce((total, item) => total + item.quantity, 0)
+);
 
 const handlePlantsClick = (e) => {
     e.preventDefault();
@@ -273,7 +277,6 @@ const handlePlantsClick = (e) => {
                     </div>
                     </a>
                 </div>
-              
             </div>
             <div style={styleObjUl}>
                 <div> <a href="#" onClick={(e)=>handlePlantsClick(e)} style={styleA}>Plants</a></div>
@@ -301,9 +304,25 @@ const handlePlantsClick = (e) => {
                             ></path>
                         </svg>
                         </h1>
+                        {totalItems > 0 && (
+                        <span 
+                        className="cart-count" 
+                        style={{
+                            position: 'absolute',
+                            top: '5px',
+                            right: '5px',
+                            background: 'white',
+                            color: '#4CAF50',
+                            borderRadius: '50%',
+                            padding: '5px 10px',
+                            fontSize: '14px'
+                        }}
+                        >
+                        {totalItems}
+                        </span>
+                    )}
                     </a>
                 </div>
-
             </div>
         </div>
         {!showCart? (
@@ -318,7 +337,15 @@ const handlePlantsClick = (e) => {
                                 <h3>{plant.name}</h3>
                                 <p>{plant.description}</p>
                                 <p className='plant-cost'>${plant.cost}</p>
-                                <button  className="product-button" onClick={() => handleAddToCart(plant)}>Add to Cart</button>
+                                <button  className="product-button"
+                                style={{
+                                    backgroundColor: addedToCart[plant.name] ? '#7e7a7a' : '#4CAF50',
+                                    color: '#fff',
+                                }}
+                                onClick={() => handleAddToCart(plant)}
+                                disabled={!!addedToCart[plant.name]}>
+                                    {addedToCart[plant.name] ? 'Added to Cart' : 'Add to Cart'}
+                                </button>
                             </div>
                         ))}
                     </div>
